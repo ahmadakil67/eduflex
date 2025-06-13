@@ -8,6 +8,11 @@ import AuthLayout from "../layouts/Authlayout";
 import AddCourse from "../pages/AddCourse";
 import PrivateRoute from "../provider/PrivateRoute";
 import CourseDetails from "../pages/CourseDetails";
+import ManageCourses from "../pages/ManageCourses";
+import EditCourse from "../pages/EditCourse";
+import EnrolledCourses from "../pages/EnrolledCourses";
+import NotFound from "../pages/NotFound";
+
 
 
 export const router = createBrowserRouter([
@@ -25,6 +30,30 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddCourse></AddCourse>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/manage-courses",
+        element: (
+          <PrivateRoute>
+            <ManageCourses></ManageCourses>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/edit-course/:id",
+        element: (
+          <PrivateRoute>
+            <EditCourse></EditCourse>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-enrollments",
+        element: (
+          <PrivateRoute>
+            <EnrolledCourses></EnrolledCourses>
           </PrivateRoute>
         ),
       },
@@ -47,5 +76,9 @@ export const router = createBrowserRouter([
         element: <Register />,  // Render Register component
       },
     ],
+  },
+  {
+    path: "*",
+    Component: NotFound,
   },
 ]);
