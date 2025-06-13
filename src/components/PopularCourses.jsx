@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import CourseCard from './courseCard';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import CourseCard from "./courseCard";
+import PopularCourseCard from "./PopularCourseCard";
 
 const PopularCourses = () => {
   const [popularCourses, setPopularCourses] = useState([]);
@@ -8,7 +9,8 @@ const PopularCourses = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/popular-courses")
+    axios
+      .get("http://localhost:3000/popular-courses")
       .then((response) => {
         setPopularCourses(response.data);
         setLoading(false);
@@ -20,6 +22,10 @@ const PopularCourses = () => {
       });
   }, []);
 
+  const sortedCourses = popularCourses.sort(
+    (a, b) => b.enrollments - a.enrollments
+  );
+
   if (loading) {
     return <div className="text-center py-8">Loading popular courses...</div>;
   }
@@ -27,7 +33,13 @@ const PopularCourses = () => {
   if (error) {
     return (
       <div className="text-center py-8 text-red-600">
-        Error loading popular courses: {error.message}
+        <div>There was an error loading the courses.</div>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-blue-600 mt-2"
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -36,7 +48,9 @@ const PopularCourses = () => {
     return (
       <div className="popular-courses-container">
         <h2 className="text-2xl font-semibold mb-4">Most Enrolled Courses</h2>
-        <div className="text-center text-gray-500">No popular courses found yet.</div>
+        <div className="text-center text-gray-500">
+          No popular courses available at the moment. Check back later!
+        </div>
       </div>
     );
   }
@@ -47,8 +61,8 @@ const PopularCourses = () => {
         Most Enrolled Courses
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
-        {popularCourses.map((course) => (
-          <CourseCard 
+        {sortedCourses.map((course) => (
+          <PopularCourseCard
             key={course._id}
             course={course}
             enrollmentCount={course.enrollments}
