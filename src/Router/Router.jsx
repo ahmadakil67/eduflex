@@ -5,6 +5,9 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";  // Import your Register component
 import { Component } from "react";
 import AuthLayout from "../layouts/Authlayout";
+import AddCourse from "../pages/AddCourse";
+import PrivateRoute from "../provider/PrivateRoute";
+import CourseDetails from "../pages/CourseDetails";
 
 
 export const router = createBrowserRouter([
@@ -16,6 +19,18 @@ export const router = createBrowserRouter([
         index: true,
         path: "/",
         element: <Home />,  // Use 'element' here as well
+      },
+      {
+        path: "/add-course",
+        element: (
+          <PrivateRoute>
+            <AddCourse></AddCourse>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/course/:courseId",  // Add the dynamic route for Course Details
+        element: <CourseDetails></CourseDetails>  // Render the CourseDetails component
       },
     ],
   },

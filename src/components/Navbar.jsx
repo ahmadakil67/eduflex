@@ -4,7 +4,8 @@ import { Typewriter } from 'react-simple-typewriter';
 import { IoMenu, IoClose } from 'react-icons/io5';
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from 'react-router'; // Corrected import for Link
-import { AuthContext } from '../provider/Authprovider';
+import { AuthContext } from '../provider/AuthProvider';
+
 
 
 const Navbar = () => {
@@ -21,7 +22,7 @@ const Navbar = () => {
     },
     {
       name: 'Add Course',
-      link: '/#add-course',
+      link: '/add-course',
     },
   ];
 
