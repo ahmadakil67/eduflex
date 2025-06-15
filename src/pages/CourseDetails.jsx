@@ -33,7 +33,7 @@ const CourseDetails = () => {
         const fetchData = async () => {
             try {
                 // Fetch course details from backend
-                const courseResponse = await fetch(`http://localhost:3000/courses/${courseId}`);
+                const courseResponse = await fetch(`https://course-management-server-beryl.vercel.app/courses/${courseId}`);
                 if (!courseResponse.ok) throw new Error("Course not found.");
 
                 const courseData = await courseResponse.json();
@@ -41,9 +41,9 @@ const CourseDetails = () => {
 
                 // Check if the user is enrolled in the course
                 if (user) {
-                    const enrollmentResponse = await fetch(`http://localhost:3000/enrollment/${courseId}?email=${user.email}`);
+                    const enrollmentResponse = await fetch(`https://course-management-server-beryl.vercel.app/enrollment/${courseId}?email=${user.email}`);
                     const enrollmentStatus = await enrollmentResponse.json();
-                    setIsEnrolled(enrollmentStatus); // Set enrollment status
+                    setIsEnrolled(enrollmentStatus); // Set enrollment status based on backend response
                 } else {
                     setIsEnrolled(false); // User is not logged in
                 }
@@ -61,11 +61,11 @@ const CourseDetails = () => {
     const handleEnroll = async () => {
         if (!user) {
             showToast("warning", "Login required to enroll!");
-            setTimeout(() => navigate('/auth/login', { state: { from: `http://localhost:3000/courses/${courseId}` } }), 2000); // Delay before navigating to login
+            setTimeout(() => navigate('/auth/login', { state: { from: `/courses/${courseId}` } }), 2000); // Delay before navigating to login
             return;
         }
 
-        if (isEnrolled) return;
+        if (isEnrolled) return; // Prevent re-enrollment
 
         const enrollmentData = {
             userEmail: user.email,
@@ -74,7 +74,7 @@ const CourseDetails = () => {
 
         try {
             // Call backend to enroll the user
-            const enrollResponse = await fetch("http://localhost:3000/enroll", {
+            const enrollResponse = await fetch("https://course-management-server-beryl.vercel.app/enroll", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(enrollmentData),
@@ -82,7 +82,7 @@ const CourseDetails = () => {
 
             const result = await enrollResponse.json();
             if (result.message === "Enrolled successfully") {
-                setIsEnrolled(true);
+                setIsEnrolled(true); // Set state to reflect that the user is enrolled
                 showToast("success", "Enrolled successfully!");
             } else {
                 showToast("error", "Enrollment failed. Please try again.");

@@ -39,7 +39,7 @@ const DiscussionForum = () => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:3000/discussions');
+        const response = await axios.get('https://course-management-server-beryl.vercel.app/discussions');
         let fetchedPosts = response.data;
 
         // Apply sorting client-side
@@ -73,7 +73,7 @@ const DiscussionForum = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/discussions', newPost);
+      const response = await axios.post('https://course-management-server-beryl.vercel.app/discussions', newPost);
       setPosts(prevPosts => [response.data, ...prevPosts]);
       setNewPostContent('');
     } catch (error) {
@@ -97,7 +97,7 @@ const DiscussionForum = () => {
     };
 
     try {
-      const response = await axios.put(`http://localhost:3000/discussions/reply/${postId}`, reply);
+      const response = await axios.put(`https://course-management-server-beryl.vercel.app/discussions/reply/${postId}`, reply);
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post._id === postId ? response.data : post
@@ -116,7 +116,7 @@ const DiscussionForum = () => {
   const upvotePost = async (postId) => {
     setLoading(true);
     try {
-      const response = await axios.put(`http://localhost:3000/discussions/vote/${postId}`);
+      const response = await axios.put(`https://course-management-server-beryl.vercel.app/discussions/vote/${postId}`);
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post._id === postId ? response.data : post
@@ -135,7 +135,7 @@ const DiscussionForum = () => {
 
     setLoading(true);
     try {
-      const response = await axios.put(`http://localhost:3000/discussions/${postId}`, { content: editPostContent });
+      const response = await axios.put(`https://course-management-server-beryl.vercel.app/discussions/${postId}`, { content: editPostContent });
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post._id === postId ? response.data : post
@@ -156,7 +156,7 @@ const DiscussionForum = () => {
 
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:3000/discussions/${postId}`);
+      await axios.delete(`https://course-management-server-beryl.vercel.app/discussions/${postId}`);
       setPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -171,7 +171,7 @@ const DiscussionForum = () => {
 
     setLoading(true);
     try {
-      const response = await axios.delete(`http://localhost:3000/discussions/reply/${postId}/${replyIndex}`);
+      const response = await axios.delete(`https://course-management-server-beryl.vercel.app/discussions/reply/${postId}/${replyIndex}`);
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post._id === postId ? response.data : post

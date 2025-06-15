@@ -10,7 +10,7 @@ const Home = () => {
 
   useEffect(() => {
     // Fetch courses from the backend or API
-    fetch("http://localhost:3000/courses") // Replace with your backend API
+    fetch("https://course-management-server-beryl.vercel.app/courses") // Replace with your backend API
       .then((res) => res.json())
       .then((data) => {
         setCourses(data); // Set courses data from API

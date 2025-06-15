@@ -22,7 +22,7 @@ const EditCourse = () => {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`http://localhost:3000/courses/${id}`) // Fetch the course data using the ID
+    fetch(`https://course-management-server-beryl.vercel.app/courses/${id}`) // Fetch the course data using the ID
       .then((res) => res.json())
       .then((data) => {
         if (data) {
@@ -55,7 +55,7 @@ const EditCourse = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`http://localhost:3000/courses/${id}`, {
+    fetch(`https://course-management-server-beryl.vercel.app/courses/${id}`, {
       method: "PUT", // Update the course using PUT method
       headers: {
         "Content-Type": "application/json",

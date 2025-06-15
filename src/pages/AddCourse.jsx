@@ -41,7 +41,7 @@ const AddCourse = () => {
         };
 
         // Send data to the backend
-        fetch("http://localhost:3000/courses", {
+        fetch("https://course-management-server-beryl.vercel.app/courses", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

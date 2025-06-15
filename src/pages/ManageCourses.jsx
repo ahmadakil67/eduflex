@@ -10,7 +10,7 @@ const ManageCourses = () => {
   useEffect(() => {
     if (user?.email) {
       // Fetch courses from the backend, assuming courses have 'createdByEmail' field
-      fetch("http://localhost:3000/courses")  // Replace with your backend API
+      fetch("https://course-management-server-beryl.vercel.app/courses")  // Replace with your backend API
         .then((res) => res.json())
         .then((data) => {
           // Filter courses that are created by the logged-in user
@@ -25,7 +25,7 @@ const ManageCourses = () => {
 
   // Handle course deletion
   const handleDelete = (id) => {
-    fetch(`http://localhost:3000/courses/${id}`, {
+    fetch(`https://course-management-server-beryl.vercel.app/courses/${id}`, {
       method: 'DELETE',
     })
       .then((res) => res.json())

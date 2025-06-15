@@ -12,7 +12,7 @@ const EnrolledCourses = () => {
     if (user?.email) {
       setLoading(true);
       // Fetch the enrolled courses for the user
-      fetch(`http://localhost:3000/enrollments?email=${user.email}`)
+      fetch(`https://course-management-server-beryl.vercel.app/enrollments?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => {
           setEnrolledCourses(data); // Set enrolled courses data from API
@@ -38,7 +38,7 @@ const EnrolledCourses = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // Send request to remove the enrollment from the database
-        fetch(`http://localhost:3000/enrollments/${enrollmentId}`, {
+        fetch(`https://course-management-server-beryl.vercel.app/enrollments/${enrollmentId}`, {
           method: "DELETE",
         })
           .then((res) => res.json())

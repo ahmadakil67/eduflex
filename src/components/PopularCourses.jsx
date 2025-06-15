@@ -10,7 +10,7 @@ const PopularCourses = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/popular-courses")
+      .get("https://course-management-server-beryl.vercel.app/popular-courses")
       .then((response) => {
         setPopularCourses(response.data);
         setLoading(false);
