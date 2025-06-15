@@ -180,13 +180,6 @@ const Login = () => {
                 Login with Google
               </button>
             </div>
-
-            <p className="text-sm text-center mt-4">
-              Don't Have An Account?{" "}
-              <Link className="text-red-500" to={"/auth/register"}>
-                Register
-              </Link>
-            </p>
           </div>
         </div>
       </div>
