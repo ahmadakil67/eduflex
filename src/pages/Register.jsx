@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router";
-import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
+import { Link, useNavigate } from "react-router"; // Fixed import path for react-router-dom
+import { GoogleAuthProvider, signInWithPopup, getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import app from "../firebase/firebase.config";
 import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
@@ -9,13 +9,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Register = () => {
-  const { createUser, setUser, updateUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(false); // To toggle between Login and Register forms
+  const [confirmPassword, setConfirmPassword] = useState(""); // For Confirm Password field
 
   const showToast = (icon, title) => {
     Swal.fire({
@@ -40,26 +41,47 @@ const Register = () => {
     // Password validation
     const upperCase = /[A-Z]/.test(password);
     const lowerCase = /[a-z]/.test(password);
-    if (password.length < 6 || !upperCase || !lowerCase) {
+    const specialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+
+    if (password.length < 8) {
+      showToast("error", "Password must be at least 8 characters long.");
+      return;
+    }
+
+    if (!upperCase || !lowerCase || !specialChar || !hasNumber) {
       showToast(
         "error",
-        "Password must be 6+ chars, include uppercase & lowercase"
+        "Password must contain at least one uppercase, one lowercase, one special character, and one number."
       );
       return;
     }
 
-    createUser(email, password)
+    if (password.includes(email)) {
+      showToast("error", "Password cannot contain your email address.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      showToast("error", "Password and Confirm Password must match.");
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        updateUser({ displayName: name, photoURL: photo })
+        // Update the user's profile after successful registration
+        updateProfile(result.user, {
+          displayName: name,
+          photoURL: photo,
+        })
           .then(() => {
             setUser({ ...result.user, displayName: name, photoURL: photo });
             showToast("success", "Registered Successfully");
-            navigate("/");
+            navigate("/"); // Redirect to homepage or previously visited page
           })
           .catch((error) => {
-            console.log(error.message);
-            setUser(result.user);
             showToast("warning", "Profile update failed");
+            console.log(error.message);
           });
       })
       .catch((error) => {
@@ -72,7 +94,7 @@ const Register = () => {
       .then((result) => {
         setUser(result.user);
         showToast("success", "Registered with Google");
-        navigate("/");
+        navigate("/"); // Redirect after successful registration
       })
       .catch((error) => {
         showToast("error", error.message);
@@ -98,6 +120,7 @@ const Register = () => {
           <div className="card-body">
             <h1 className="text-4xl text-center font-bold">EduFlex</h1>
             <p className="text-sm text-center">Your Gateway to Learning</p>
+
             {/* Tabs for Login and Register */}
             <div className="flex justify-center space-x-8 mt-3">
               <button
@@ -174,6 +197,17 @@ const Register = () => {
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </button>
                 </div>
+
+                <label className="label">Confirm Password</label>
+                <input
+                  name="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  className="input"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
 
                 <button type="submit" className="btn btn-neutral mt-4 w-full">
                   Register
