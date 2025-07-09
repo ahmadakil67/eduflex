@@ -22,7 +22,8 @@ A full-featured educational platform built with React.
 
 ## 🔗 Live Demo
 
-[View Live Site]((https://event-explorer-cdca0.web.app/)
+- [View Live Site](https://event-explorer-cdca0.web.app/)
+- [Server Site Code](https://github.com/ahmadakil67/eduflex-server)
 
 ## 📂 Setup Instructions
 
